@@ -11,6 +11,7 @@ public class WikiCrawler {
 	private String seedUrl, fileName;
 	private int max;
 	
+	
 	public WikiCrawler(String seedUrl, int max, String fileName) {
 		this.seedUrl = seedUrl;
 		this.max = max;
@@ -18,7 +19,7 @@ public class WikiCrawler {
 	}
 	
 	/*
-	 * @param doc String that contains 
+	 * @param doc String that represents the source code of an html page
 	 */
 	private ArrayList<String> extractLinks(String doc) {
 		
