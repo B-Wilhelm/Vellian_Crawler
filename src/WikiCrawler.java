@@ -25,11 +25,17 @@ public class WikiCrawler {
 	/*
 	 * @param doc String that represents the source code of an html page
 	 */
-	private ArrayList<String> extractLinks(String doc) {
+	public ArrayList<String> extractLinks(String doc) {
 		
 		
 		return null;
 	}
+	
+	public void crawl() {
+		
+	}
+	
+	//any private helper methods
 	
 	
 }
