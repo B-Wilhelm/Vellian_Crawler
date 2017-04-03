@@ -80,7 +80,7 @@ public class WikiCrawler {
 	/////////////////////////////////////////
 	
 	
-	public String getPageSource(String urlS) {	// Takes in relative URL
+	private String getPageSource(String urlS) {	// Takes in relative URL
 		progSource = "";
 		
 		URL url;
@@ -120,7 +120,7 @@ public class WikiCrawler {
 		return "";
 	}
 	
-	public String getSource() {
+	private String getSource() {
 		return source;
 	}
 }
