@@ -16,6 +16,7 @@ import java.util.Scanner;
 
 public class WikiCrawler {
 	static final String BASE_URL = "https://en.wikipedia.org";
+	private ArrayList<String> list;
 	private String seedUrl, fileName;
 	private int max, min = 0;
 	private Scanner s, l;	// Scanner for entire source code, Scanner for individual links
@@ -43,7 +44,7 @@ public class WikiCrawler {
 	 */
 	
 	public ArrayList<String> extractLinks(String doc) {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> newList = new ArrayList<String>();
 		scannedText = "";
 		
 		s = new Scanner(doc);	// Scanner for whole html source code
@@ -59,14 +60,14 @@ public class WikiCrawler {
 			scannedText = s.next() + "\n";
 			
 			if((scannedText.toLowerCase()).contains(CONTAINS_CHECK) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[0])) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[1])) && (scannedText.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if((min < max) && !(list.contains(scannedText))) {
-					list.add(scannedText);
+				if((min < max) && !(newList.contains(scannedText)) && !(scannedText.equals(seedUrl))) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
+					newList.add(scannedText);
 					min++;
 				}
 			}
 		}
 		
-		return list;
+		return newList;
 	}
 	
 	
