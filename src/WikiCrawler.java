@@ -57,10 +57,11 @@ public class WikiCrawler {
 		s.useDelimiter("href=\"|\"");
 		
 		while(s.hasNext()) {
-			scannedText = s.next() + "\n";
+			scannedText = s.next();
 			
 			if((scannedText.toLowerCase()).contains(CONTAINS_CHECK) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[0])) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[1])) && (scannedText.charAt(1)=='w')) {	// Ensures properly formatted links get through
 				if((min < max) && !(newList.contains(scannedText)) && !(scannedText.equals(seedUrl))) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
+					System.out.println(seedUrl + " : " + scannedText);
 					newList.add(scannedText);
 					min++;
 				}
