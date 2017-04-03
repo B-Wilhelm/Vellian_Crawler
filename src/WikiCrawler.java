@@ -120,7 +120,7 @@ public class WikiCrawler {
 		return "";
 	}
 	
-	private String getSource() {
+	public String getSource() {
 		return source;
 	}
 }
