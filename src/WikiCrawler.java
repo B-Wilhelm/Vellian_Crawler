@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,6 +24,8 @@ public class WikiCrawler {
 	private String source, scannedText, progSource;
 	private static final String CONTAINS_CHECK = "/wiki/";
 	private static final String[] NOT_CONTAINED = {":", "#"};
+	private AdjacencyList graph; // the graph our crawler will create
+	private File f;
 	
 	
 	/*
@@ -73,6 +76,7 @@ public class WikiCrawler {
 	
 	
 	public void crawl() {
+		graph = new AdjacencyList(max);
 		
 	}
 	
@@ -122,5 +126,8 @@ public class WikiCrawler {
 	
 	public String getSource() {
 		return source;
+	}
+	private void writeToFile() {
+		
 	}
 }

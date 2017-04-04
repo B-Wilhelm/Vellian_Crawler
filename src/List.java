@@ -1,5 +1,11 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+/**
+ * 
+ * @author Brett Wilhelm
+ * @author Zach Johnson
+ *
+ */
 
 public class List<Item> implements Iterable<Item>{
 	private edgeNode<Item> head;
@@ -15,7 +21,7 @@ public class List<Item> implements Iterable<Item>{
 		n = 0;
 	}
 	
-	public int size(){
+	public int size() {
 		return n;
 	}
 	
@@ -32,18 +38,16 @@ public class List<Item> implements Iterable<Item>{
     }
 	
 	  private class ListIterator<Item> implements Iterator<Item> {
-	        private edgeNode<Item> current;
+	        private edgeNode<Item> cur;
 
-	        public ListIterator(edgeNode<Item> first) {
-	            current = first;
-	        }
+	        public ListIterator(edgeNode<Item> first) { cur = first; }
 
-	        public boolean hasNext()  { return current != null;                     }
+	        public boolean hasNext()  { return cur != null; }
 
 	        public Item next() {
-	            if (!hasNext()) throw new NoSuchElementException();
-	            Item item = current.item;
-	            current = current.next; 
+	            if (!hasNext()) { throw new NoSuchElementException(); }
+	            Item item = cur.item;
+	            cur = cur.next; 
 	            return item;
 	        }
 	    }

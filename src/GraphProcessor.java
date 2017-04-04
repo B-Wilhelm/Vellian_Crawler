@@ -8,8 +8,12 @@ import java.util.ArrayList;
  */
 
 public class GraphProcessor {
+	private int V;
+	private AdjacencyList graph;
+	private boolean visited[];
+	
 	public GraphProcessor(String graphData) {
-		
+		graph = new AdjacencyList(graphData);
 	}
 	
 	public int outDegree(String v) {
@@ -33,10 +37,24 @@ public class GraphProcessor {
 	}
 	
 	public ArrayList<String> bfsPath(String u, String v) {
-		return null;
+		ArrayList<String> path = new ArrayList<String>();
+		//int u = 
+		
+		return path;
 	}
 	
 	//any private helper methods
+	private void DFS(int v) {
+		visited = new boolean[V];
+		
+		DFSHelper(v, visited);
+	}
+	
+	private void DFSHelper(int v, boolean visited[]) {
+		
+	}
+	
+	
 }
 
 

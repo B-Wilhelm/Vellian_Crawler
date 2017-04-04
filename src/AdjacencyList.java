@@ -1,45 +1,40 @@
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
-
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+/**
+ * 
+ * @author Brett Wilhelm
+ * @author Zach Johnson
+ *
+ */
 
 public class AdjacencyList {
-	private final int V; 
-	private int E;
-	private List<Node>[] adj;
-	private int[] indegree;
-	
+	private Map< String, LinkedList<String>> adj;
+	private final int V;
 	public AdjacencyList(int v) {
-		if(v <= 0) {throw new IllegalArgumentException();}
-		
+		adj = new HashMap<String, LinkedList<String>>();
 		V = v;
-		this.E = 0;
-		indegree = new int[V];
-		adj = (List<Node>[]) new List[V];
-		for(int i = 0;i < V; i++) {
-			adj[i] = new List<Node>();
-		}
-		
 	}
 	
-	public void addEdge(int v, Node to) {
-		isVertexValid(v);
-		isVertexValid(to.getLoc());
-		adj[v].add(to);
-		indegree[to.getLoc()]++;
-		E++;
+	public AdjacencyList(String filename) {
+		//TODO
+		V = 0;
+	}
+	public void addNode(String node) {
+		 adj.putIfAbsent(node, new LinkedList<String>());
 	}
 	
-	public int getV() { return V;}
-	public int getE() { return E;}
-	
-	public int outdegree(int v) {
-		isVertexValid(v);
-		return adj[v].size();
+	public void addEdge(String from, String to) {
+		adj.get(from).add(to);	
 	}
 	
-	private void isVertexValid(int v) {
-		if (v < 0 || v>= V) throw new IllegalArgumentException();
+	public int getOutDegree(String node)
+	{
+		return adj.get(node).size();
+	}
+	public int getMaxVertices() {
+		return V;
 	}
 	
 }
