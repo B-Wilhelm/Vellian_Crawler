@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Stack;
 
@@ -14,6 +17,10 @@ public class GraphProcessor {
 	private int V;
 	private AdjacencyList graph;
 	private Map<String, Boolean> isTraveled;
+	private LinkedList<String> neighbors;
+	private ArrayList<String> path = new ArrayList<String>();
+	private Stack<String> s = new Stack<String>();
+	private Iterator<String> it;
 	
 	public GraphProcessor(String graphData) {
 		graph = new AdjacencyList(graphData);
@@ -45,24 +52,43 @@ public class GraphProcessor {
 	}
 	
 	public ArrayList<String> bfsPath(String u, String v) {
-		ArrayList<String> path = new ArrayList<String>();
-		Stack<String> s = new Stack<String>();
-		//setup visited/unexplored list
-		//setup discovery/back list
+		path = new ArrayList<String>();
+		s = new Stack<String>();
+		
+		BFSPathFinder(u,v);
+		
+		while(!s.isEmpty()){
+			path.add(s.pop());
+		}
 		return path;
 	}
-	
-	//any private helper methods
-	private void DFS(String v) {
-		//TODO
+	//private helper methods
+	private void BFSPathFinder(String u, String v) {
+		setIsTraveled(u);
+		s.push(u);
+		if(u == v) {
+			return;
+		}
+		neighbors = graph.getNeighbors(u);
+		it = neighbors.iterator();
+		while(it.hasNext()) {
+			String cur = it.next();
+			if (!isTraveled.get(cur)) {
+				setIsTraveled(cur);
+				s.push(cur);
+				BFSPathFinder(cur, v);
+				s.pop();
+			}
+		}
+		s.pop();
+		if(s.isEmpty()){
+			return;
+		}	
 	}
 	
-	private void DFSHelper(int v, boolean visited[]) {
-		//TODO
-	}
 	private void setIsTraveled(String v)
 	{
-		
+		isTraveled.replace(v, true);
 	}
 	
 }

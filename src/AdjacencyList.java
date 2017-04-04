@@ -11,7 +11,7 @@ import java.util.Set;
  */
 
 public class AdjacencyList {
-	private Map< String, LinkedList<String>> adj;
+	public Map< String, LinkedList<String>> adj;
 	private final int V;
 	
 	public AdjacencyList(int v) {
@@ -30,7 +30,7 @@ public class AdjacencyList {
 	public void addEdge(String from, String to) {
 		adj.get(from).add(to);	
 	}
-	
+	public LinkedList<String> getNeighbors(String node) { return adj.get(node); }
 	public int getOutDegree(String node) { return adj.get(node).size(); }
 	public int getMaxVertices() { return V; }
 	public Set<String> getKeys() { return adj.keySet(); }
