@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -11,9 +13,15 @@ import java.util.Stack;
 public class GraphProcessor {
 	private int V;
 	private AdjacencyList graph;
+	private Map<String, Boolean> isTraveled;
 	
 	public GraphProcessor(String graphData) {
 		graph = new AdjacencyList(graphData);
+		isTraveled = new HashMap<String, Boolean>();
+		
+		for(String key : graph.getKeys()) {
+			isTraveled.put(key, false);
+		}
 	}
 	
 	public int outDegree(String v) {
@@ -52,7 +60,10 @@ public class GraphProcessor {
 	private void DFSHelper(int v, boolean visited[]) {
 		//TODO
 	}
-	
+	private void setIsTraveled(String v)
+	{
+		
+	}
 	
 }
 
