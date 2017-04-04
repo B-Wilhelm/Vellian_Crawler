@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.Scanner;
 
 /**
@@ -26,6 +27,7 @@ public class WikiCrawler {
 	private static final String[] NOT_CONTAINED = {":", "#"};
 	private AdjacencyList graph; // the graph our crawler will create
 	private File f;
+	private Queue<String> test;//needed for BFS change name from test
 	
 	
 	/*

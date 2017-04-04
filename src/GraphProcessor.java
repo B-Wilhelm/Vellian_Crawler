@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * 
@@ -10,14 +11,13 @@ import java.util.ArrayList;
 public class GraphProcessor {
 	private int V;
 	private AdjacencyList graph;
-	private boolean visited[];
 	
 	public GraphProcessor(String graphData) {
 		graph = new AdjacencyList(graphData);
 	}
 	
 	public int outDegree(String v) {
-		return 0;
+		return graph.getOutDegree(v);
 	}
 	
 	public boolean sameComponent(String u, String v) {
@@ -38,20 +38,19 @@ public class GraphProcessor {
 	
 	public ArrayList<String> bfsPath(String u, String v) {
 		ArrayList<String> path = new ArrayList<String>();
-		//int u = 
-		
+		Stack<String> s = new Stack<String>();
+		//setup visited/unexplored list
+		//setup discovery/back list
 		return path;
 	}
 	
 	//any private helper methods
-	private void DFS(int v) {
-		visited = new boolean[V];
-		
-		DFSHelper(v, visited);
+	private void DFS(String v) {
+		//TODO
 	}
 	
 	private void DFSHelper(int v, boolean visited[]) {
-		
+		//TODO
 	}
 	
 	
