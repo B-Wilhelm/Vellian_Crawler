@@ -57,7 +57,7 @@ public class WikiCrawler {
 		s = new Scanner(doc);	// Scanner for whole html source code
 		s.useDelimiter("<p>|<P>");
 		
-		if(s.hasNext()) { s.next(); }// Skips to just after first instance of <p> or <P>
+		if(s.hasNext()) { s.next(); }	// Skips to just after first instance of <p> or <P>
 		
 		s.useDelimiter("href=\"|\"");
 		
@@ -65,9 +65,14 @@ public class WikiCrawler {
 			scannedText = s.next();
 			
 			if((scannedText.toLowerCase()).contains(CONTAINS_CHECK) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[0])) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[1])) && (scannedText.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if(((newList.size() + list.size()) < max) && !(newList.contains(scannedText)) && !(list.contains(scannedText)) && !(scannedText.equals(seedUrl))) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
-					System.out.println(seedUrl + " : " + scannedText);
-					newList.add(scannedText);
+				if(!(newList.contains(scannedText)) && !(list.contains(scannedText)) && !(scannedText.equals(seedUrl))) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
+					if((newList.size()+list.size()) < (max)) {
+						System.out.println(seedUrl + " : " + scannedText);
+						newList.add(scannedText);
+					}
+					else {
+						
+					}
 				}
 				else {
 					s.close();
@@ -85,10 +90,8 @@ public class WikiCrawler {
 		graph = new AdjacencyList(max);
 		Iterator<String> iter = list.iterator();
 		
-		while(iter.hasNext()) {
-			if((list.size() < max)) {
-				list.addAll(extractLinks(iter.next()));
-			}
+		while((iter.hasNext()) && (list.size()<max)) {
+			list.addAll(extractLinks(iter.next()));
 		}
 		
 		
