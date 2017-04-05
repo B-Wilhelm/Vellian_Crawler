@@ -86,10 +86,10 @@ public class WikiCrawler {
 			input = s.next();
 			
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if(!(graph.getNeighbors(doc).contains(input)) && !(input.equals(seedUrl)) && (!toggle) && (newList.size()+list.size()<max)) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
+				if(!toggle && graph.size()<max) {
 					
 				}
-				else if((newList.contains(input) || list.contains(input)) && (toggle)) {
+				else {
 					
 				}
 			}
