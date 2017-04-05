@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 public class WikiCrawler {
 	static final String BASE_URL = "https://en.wikipedia.org";
-	private ArrayList<String> list;
+	private ArrayList<String> list = new ArrayList<String>();
 	private String seedUrl, fileName;
 	private int max;
 	private Scanner s, l;	// Scanner for entire source code, Scanner for individual links
@@ -69,10 +69,14 @@ public class WikiCrawler {
 					System.out.println(seedUrl + " : " + scannedText);
 					newList.add(scannedText);
 				}
-				else { return newList; }
+				else {
+					s.close();
+					return newList;
+				}
 			}
 		}
 		
+		s.close();
 		return newList;
 	}
 	
@@ -81,11 +85,13 @@ public class WikiCrawler {
 		graph = new AdjacencyList(max);
 		Iterator<String> iter = list.iterator();
 		
-		while((iter.hasNext()) && (list.size()<max)) {
-			if((list.size() < max) || iter.hasNext()) {
+		while(iter.hasNext()) {
+			if((list.size() < max)) {
 				list.addAll(extractLinks(iter.next()));
 			}
 		}
+		
+		
 	}
 	
 	
