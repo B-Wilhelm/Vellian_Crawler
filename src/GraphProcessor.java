@@ -1,8 +1,8 @@
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
@@ -24,7 +24,7 @@ public class GraphProcessor {
 	private Iterator<String> it;
 	private String SCC = "";
 	
-	public GraphProcessor(String graphData) {
+	public GraphProcessor(String graphData) throws FileNotFoundException {
 		graph = new AdjacencyList(graphData);
 		isTraveled = new HashMap<String, Boolean>();
 		
@@ -120,7 +120,7 @@ public class GraphProcessor {
 		while(s1.hasNextLine()){
 			count++;
 		}
-		
+		s1.close();
 		return count;
 	}
 	
