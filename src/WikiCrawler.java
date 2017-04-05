@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 public class WikiCrawler {
 	static final String BASE_URL = "https://en.wikipedia.org";
-	private ArrayList<String> list = new ArrayList<String>();
+	private ArrayList<urlEdge> list = new ArrayList<urlEdge>();
 	private String seedUrl, fileName;
 	private int max;
 	private Scanner s, l;	// Scanner for entire source code, Scanner for individual links
@@ -29,6 +29,7 @@ public class WikiCrawler {
 	private AdjacencyList graph; // the graph our crawler will create
 	private File f;
 	private Queue<String> test;	//needed for BFS change name from test
+	private boolean toggle;
 	
 	
 	/*
@@ -43,6 +44,7 @@ public class WikiCrawler {
 		
 		source = getPageSource(seedUrl);
 		list = extractLinks(source);
+		crawl();
 	}
 	
 	
@@ -50,8 +52,8 @@ public class WikiCrawler {
 	 * @param doc String that represents the source code of an html page
 	 */
 	
-	public ArrayList<String> extractLinks(String doc) {
-		ArrayList<String> newList = new ArrayList<String>();
+	public ArrayList<urlEdge> extractLinks(String doc) {
+		ArrayList<urlEdge> newList = new ArrayList<urlEdge>();
 		scannedText = "";
 		
 		s = new Scanner(doc);	// Scanner for whole html source code
@@ -65,18 +67,12 @@ public class WikiCrawler {
 			scannedText = s.next();
 			
 			if((scannedText.toLowerCase()).contains(CONTAINS_CHECK) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[0])) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[1])) && (scannedText.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if(!(newList.contains(scannedText)) && !(list.contains(scannedText)) && !(scannedText.equals(seedUrl))) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
-					if((newList.size()+list.size()) < (max)) {
-						System.out.println(seedUrl + " : " + scannedText);
-						newList.add(scannedText);
-					}
-					else {
-						
-					}
+				if(!(newList.contains(scannedText)) && !(list.contains(scannedText)) && !(scannedText.equals(seedUrl)) && (!toggle) && (newList.size() + list.size() < max)) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
+					newList.add(new urlEdge(seedUrl, scannedText));
 				}
-				else {
-					s.close();
-					return newList;
+				else if((newList.contains(scannedText) || list.contains(scannedText)) && (toggle)) {
+					newList.add(new urlEdge(seedUrl, scannedText));
+					
 				}
 			}
 		}
@@ -88,13 +84,18 @@ public class WikiCrawler {
 	
 	public void crawl() {
 		graph = new AdjacencyList(max);
-		Iterator<String> iter = list.iterator();
 		
-		while((iter.hasNext()) && (list.size()<max)) {
-			list.addAll(extractLinks(iter.next()));
+		for(int i = 0; i < list.size() && list.size()<max; i++) {
+			seedUrl = list.get(i).getEnd();
+			list.addAll(extractLinks(getPageSource(seedUrl)));
 		}
 		
+		toggle = true;
 		
+		for(int i = 0; i < list.size(); i++) {
+			seedUrl = list.get(i).getEnd();
+			System.out.println(list.addAll(extractLinks(getPageSource(seedUrl))));
+		}
 	}
 	
 	
@@ -144,6 +145,10 @@ public class WikiCrawler {
 	
 	public String getSource() {	// May make private
 		return source;
+	}
+	
+	public ArrayList<urlEdge> getList() {
+		return list;
 	}
 	
 	private void writeToFile() {
