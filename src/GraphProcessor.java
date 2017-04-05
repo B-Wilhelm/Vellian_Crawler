@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -21,6 +22,7 @@ public class GraphProcessor {
 	private ArrayList<String> path = new ArrayList<String>();
 	private Stack<String> s = new Stack<String>();
 	private Iterator<String> it;
+	private String SCC = "";
 	
 	public GraphProcessor(String graphData) {
 		graph = new AdjacencyList(graphData);
@@ -37,19 +39,89 @@ public class GraphProcessor {
 	}
 	
 	public boolean sameComponent(String u, String v) {
-		return true;
+		computeSCCs();
+		ArrayList<String> SCCList;
+		Scanner s1 = new Scanner(SCC);
+		String line;
+		while(s1.hasNextLine()) {
+			line = s1.nextLine();
+			Scanner s2 = new Scanner(line);
+			SCCList = new ArrayList<String>();
+			while(s2.hasNext())
+			{
+				SCCList.add(s2.next());
+			}
+			if(SCCList.contains(u)&& SCCList.contains(v))
+			{
+				s1.close();
+				s2.close();
+				return true;
+			}	
+			s2.close();
+		}
+		s1.close();
+		return false;
 	}
 	
 	public ArrayList<String> componentVerticies(String v) {
-		return null;
+		computeSCCs();
+		ArrayList<String> SCCList = new ArrayList<String>();
+		Scanner s1 = new Scanner(SCC);
+		String line;
+		while(s1.hasNextLine()) {
+			line = s1.nextLine();
+			Scanner s2 = new Scanner(line);
+			SCCList = new ArrayList<String>();
+			while(s2.hasNext())
+			{
+				SCCList.add(s2.next());
+			}
+			if(SCCList.contains(v))
+			{
+				s1.close();
+				s2.close();
+				return SCCList;
+			}	
+			s2.close();
+		}
+		s1.close();
+		return SCCList;
 	}
 	
 	public int largestComponent() {
-		return 0;
+		computeSCCs();
+		ArrayList<String> SCCList;
+		Scanner s1 = new Scanner(SCC);
+		String line;
+		int size = 0;
+		
+		while(s1.hasNextLine()) {
+			line = s1.nextLine();
+			Scanner s2 = new Scanner(line);
+			SCCList = new ArrayList<String>();
+			while(s2.hasNext())
+			{
+				SCCList.add(s2.next());
+			}
+			if(SCCList.size() >= size){
+				size = SCCList.size();
+			}
+			s2.close();
+		}
+		s1.close();
+		return size;
 	}
 	
 	public int numComponents() {
-		return 0;
+		computeSCCs();
+		Scanner s1 = new Scanner(SCC);
+		int count = 0;
+		
+		while(s1.hasNextLine()){
+			count++;
+		}
+		
+		return count;
 	}
 	
 	public ArrayList<String> bfsPath(String u, String v) {
@@ -65,7 +137,13 @@ public class GraphProcessor {
 		}
 		return path;
 	}
+	
 	//private helper methods used
+	private void setIsTraveled(String v)
+	{
+		isTraveled.replace(v, true);
+	}
+	//shortest path helper methods
 	private void BFSPathFinder(String u, String v) {
 		setIsTraveled(u);
 		s.push(u);
@@ -88,6 +166,7 @@ public class GraphProcessor {
 			return;
 		}	
 	}
+	//Strongly Connected Component helper methods
 	private AdjacencyList getTranspose() {
 		AdjacencyList tmp = new AdjacencyList(V);
 		
@@ -95,7 +174,7 @@ public class GraphProcessor {
 			neighbors = graph.getNeighbors(key);
 			it = neighbors.iterator();
 			while(it.hasNext()) {
-				tmp.adj.get(key).add(it.next());
+				tmp.addEdge(it.next(), key);
 			}
 		}
 		
@@ -116,13 +195,7 @@ public class GraphProcessor {
 		
 		s.push(new String(v));
 	}
-	
-	
-	private void setIsTraveled(String v)
-	{
-		isTraveled.replace(v, true);
-	}
-	
+		
 	private void computeSCCs() {
 		
 		isTraveled.clear();
@@ -146,11 +219,32 @@ public class GraphProcessor {
 		while(s1.isEmpty() == false) {
 			String v = s1.pop();
 			
-			//TODO
+			if(isTraveled.get(v) == false)
+			{
+				DFSHelper(reverse, v, isTraveled);
+				SCC += "\n";
+			}
+			
 		}
 		
 	}
-	
+	private void DFSHelper(AdjacencyList g, String v,  Map<String, Boolean> visited) {
+		setIsTraveled(v);
+		SCC += v + " ";
+		
+		String cur;
+		neighbors = g.getNeighbors(v);
+		it = neighbors.iterator();
+		
+		while(it.hasNext()) {
+			
+			 cur = it.next();
+			 
+			if(visited.get(cur) == false) {
+				fillOrder(cur, visited, s);
+			}
+		}
+	}
 }
 
 
