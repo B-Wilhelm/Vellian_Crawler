@@ -10,11 +10,16 @@ public class TestDriver {
 		GraphProcessor gp = new GraphProcessor("C:/Users/Zach Johnson/git/CityMap.txt");
 		
 		//Vertices are Ames, Minneapolis, Chicago, Denver, Omaha
-		int outdegree = gp.outDegree(Ames);
-		System.out.println("Expected out degree: 2, Actual: " + outdegree);
-		outdegree = gp.outDegree(Minneapolis);
-		System.out.println("Expected out degree: 1, Actual: " + outdegree);
-
+		int outDegree = gp.outDegree(Ames);
+		System.out.println("Expected out degree: 2, Actual: " + outDegree);
+		outDegree = gp.outDegree(Minneapolis);
+		System.out.println("Expected out degree: 1, Actual: " + outDegree);
+		int biggestComponent = gp.largestComponent();
+		System.out.println("Expected: 2, Actual: " + biggestComponent);
+		
+		int numC = gp.numComponents();
+		System.out.println("Expected: 4, Actual: " + numC);
+		
 	}
 
 

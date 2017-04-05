@@ -120,6 +120,7 @@ public class GraphProcessor {
 		
 		while(s1.hasNextLine()){
 			count++;
+			s1.nextLine();
 		}
 		s1.close();
 		return count;
@@ -172,10 +173,13 @@ public class GraphProcessor {
 		AdjacencyList tmp = new AdjacencyList(V);
 		
 		for(String key : graph.getKeys()){
+			tmp.addNode(key);
 			neighbors = graph.getNeighbors(key);
 			it = neighbors.iterator();
 			while(it.hasNext()) {
-				tmp.addEdge(it.next(), key);
+				String s = it.next();
+				tmp.addNode(s);
+				tmp.addEdge(s, key);
 			}
 		}
 		
