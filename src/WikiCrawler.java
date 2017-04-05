@@ -42,8 +42,7 @@ public class WikiCrawler {
 		this.max = max;
 		this.fileName = fileName;
 		
-		source = getPageSource(seedUrl);
-		list = extractLinks(source);
+		list = extractLinks(getPageSource(seedUrl));
 		crawl();
 	}
 	
@@ -84,17 +83,19 @@ public class WikiCrawler {
 	
 	public void crawl() {
 		graph = new AdjacencyList(max);
+		ArrayList<urlEdge> temp;
 		
 		for(int i = 0; i < list.size() && list.size()<max; i++) {
 			seedUrl = list.get(i).getEnd();
-			list.addAll(extractLinks(getPageSource(seedUrl)));
+			temp = extractLinks(getPageSource(seedUrl));
+			list.addAll(temp);
 		}
 		
 		toggle = true;
 		
 		for(int i = 0; i < list.size(); i++) {
-			seedUrl = list.get(i).getEnd();
-			System.out.println(list.addAll(extractLinks(getPageSource(seedUrl))));
+			temp = extractLinks(getPageSource(seedUrl));
+			System.out.println(list.addAll(temp));
 		}
 	}
 	
