@@ -17,16 +17,21 @@ public class AdjacencyList {
 	public Map< String, LinkedList<String>> adj;
 	private final int V;
 	
+	private AdjacencyList() throws FileNotFoundException {
+		V = 0;
+	}
 	public AdjacencyList(int v) {
 		adj = new HashMap<String, LinkedList<String>>();
 		V = v;
 	}
 	
-	public AdjacencyList(String filename) throws FileNotFoundException {
-		File f = new File(filename);
+	public AdjacencyList(String filepath) throws FileNotFoundException {
+		adj = new HashMap<String, LinkedList<String>>();
+		File f = new File(filepath);
 		Scanner s = new Scanner(f);
 		String l1, n1, n2;
 		V = s.nextInt();
+		s.nextLine();
 		while(s.hasNextLine()) {
 			l1 = s.nextLine();
 			Scanner s2 = new Scanner(l1); 

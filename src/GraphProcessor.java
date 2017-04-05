@@ -31,6 +31,7 @@ public class GraphProcessor {
 		for(String key : graph.getKeys()) {
 			isTraveled.put(key, false);
 		}
+		undiscovered = new HashMap<String, Boolean>();
 		undiscovered.putAll(isTraveled);
 	}
 	
