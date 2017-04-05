@@ -1,11 +1,16 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class testDrive {
 
 	public static void main(String[] args) throws IOException {
-		WikiCrawler wc = new WikiCrawler("/wiki/Complexity_theory", 20, "test.txt");
+		WikiCrawler wc = new WikiCrawler("/wiki/Complexity_theory", 4, "test.txt");
 		
-		System.out.println(wc.extractLinks(wc.getSource()));
+		ArrayList<String> temp = wc.getList();
+		
+		for(int i = 0; i < temp.size(); i++) {
+			System.out.println();
+		}
 		
 		
 	}
