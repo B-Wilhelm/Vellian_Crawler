@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -20,14 +21,14 @@ public class WikiCrawler {
 	static final String BASE_URL = "https://en.wikipedia.org";
 	private ArrayList<String> list;
 	private String seedUrl, fileName;
-	private int max, min = 0;
+	private int max;
 	private Scanner s, l;	// Scanner for entire source code, Scanner for individual links
 	private String source, scannedText, progSource;
 	private static final String CONTAINS_CHECK = "/wiki/";
 	private static final String[] NOT_CONTAINED = {":", "#"};
 	private AdjacencyList graph; // the graph our crawler will create
 	private File f;
-	private Queue<String> test;//needed for BFS change name from test
+	private Queue<String> test;	//needed for BFS change name from test
 	
 	
 	/*
@@ -41,6 +42,7 @@ public class WikiCrawler {
 		this.fileName = fileName;
 		
 		source = getPageSource(seedUrl);
+		list = extractLinks(source);
 	}
 	
 	
@@ -55,9 +57,7 @@ public class WikiCrawler {
 		s = new Scanner(doc);	// Scanner for whole html source code
 		s.useDelimiter("<p>|<P>");
 		
-		if(s.hasNext()) {			
-			s.next();	// Skips to just after first instance of <p> or <P>
-		}
+		if(s.hasNext()) { s.next(); }// Skips to just after first instance of <p> or <P>
 		
 		s.useDelimiter("href=\"|\"");
 		
@@ -65,11 +65,11 @@ public class WikiCrawler {
 			scannedText = s.next();
 			
 			if((scannedText.toLowerCase()).contains(CONTAINS_CHECK) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[0])) && !((scannedText.toLowerCase()).contains(NOT_CONTAINED[1])) && (scannedText.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if((min < max) && !(newList.contains(scannedText)) && !(scannedText.equals(seedUrl))) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
+				if(((newList.size() + list.size()) < max) && !(newList.contains(scannedText)) && !(list.contains(scannedText)) && !(scannedText.equals(seedUrl))) {	// Ensures links aren't duplicates or self-loops and stops collecting at "max" value
 					System.out.println(seedUrl + " : " + scannedText);
 					newList.add(scannedText);
-					min++;
 				}
+				else { return newList; }
 			}
 		}
 		
@@ -79,7 +79,13 @@ public class WikiCrawler {
 	
 	public void crawl() {
 		graph = new AdjacencyList(max);
+		Iterator<String> iter = list.iterator();
 		
+		while((iter.hasNext()) && (list.size()<max)) {
+			if((list.size() < max) || iter.hasNext()) {
+				list.addAll(extractLinks(iter.next()));
+			}
+		}
 	}
 	
 	
@@ -108,6 +114,7 @@ public class WikiCrawler {
 	        }
 	        
 	        return progSource;
+	        
 	    } catch (MalformedURLException m) {
 	         m.printStackTrace();
 	    } catch (IOException i) {
@@ -126,9 +133,10 @@ public class WikiCrawler {
 		return "";
 	}
 	
-	public String getSource() {
+	public String getSource() {	// May make private
 		return source;
 	}
+	
 	private void writeToFile() {
 		
 	}
