@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class TestDriver {
 	public static void main(String[] args) throws IOException {
@@ -15,11 +16,18 @@ public class TestDriver {
 		outDegree = gp.outDegree(Minneapolis);
 		System.out.println("Expected out degree: 1, Actual: " + outDegree);
 		int biggestComponent = gp.largestComponent();
-		System.out.println("Expected: 2, Actual: " + biggestComponent);
+		System.out.println("Expected: 3, Actual: " + biggestComponent);
 		
 		int numC = gp.numComponents();
-		System.out.println("Expected: 4, Actual: " + numC);
+		System.out.println("Expected: 3, Actual: " + numC);
 		
+		//System.out.println(gp.SCC);
+		
+		ArrayList<String> BFSpath = gp.bfsPath(Chicago, Denver);
+		System.out.println(BFSpath.size());
+		for(int i = 0; i < BFSpath.size(); i++) {
+			System.out.println(BFSpath.get(i));
+		}
 	}
 
 

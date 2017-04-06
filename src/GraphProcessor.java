@@ -22,7 +22,7 @@ public class GraphProcessor {
 	private ArrayList<String> path = new ArrayList<String>();
 	private Stack<String> s = new Stack<String>();
 	private Iterator<String> it;
-	private String SCC = "";
+	public String SCC = "";
 	
 	public GraphProcessor(String graphData) throws FileNotFoundException {
 		graph = new AdjacencyList(graphData);
@@ -169,6 +169,24 @@ public class GraphProcessor {
 		}	
 	}
 	//Strongly Connected Component helper methods
+	private void DFSHelper(AdjacencyList g, String v,  Map<String, Boolean> visited) {
+		setIsTraveled(v);
+		SCC += v + " ";
+		
+		String cur;
+		neighbors = g.getNeighbors(v);
+		it = neighbors.iterator();
+		
+		while(it.hasNext()) {
+			
+			 cur = it.next();
+			 
+			if(visited.get(cur) == false) {
+				DFSHelper(g, cur, visited);
+			}
+		}
+	}
+	
 	private AdjacencyList getTranspose() {
 		AdjacencyList tmp = new AdjacencyList(V);
 		
@@ -202,7 +220,7 @@ public class GraphProcessor {
 	}
 		
 	private void computeSCCs() {
-		
+		SCC = "";
 		isTraveled.clear();
 		isTraveled.putAll(undiscovered);
 		Stack<String> s1 = new Stack<String>();
@@ -233,23 +251,7 @@ public class GraphProcessor {
 		}
 		
 	}
-	private void DFSHelper(AdjacencyList g, String v,  Map<String, Boolean> visited) {
-		setIsTraveled(v);
-		SCC += v + " ";
-		
-		String cur;
-		neighbors = g.getNeighbors(v);
-		it = neighbors.iterator();
-		
-		while(it.hasNext()) {
-			
-			 cur = it.next();
-			 
-			if(visited.get(cur) == false) {
-				fillOrder(cur, visited, s);
-			}
-		}
-	}
+	
 }
 
 
