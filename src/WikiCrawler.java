@@ -29,7 +29,8 @@ public class WikiCrawler {
 	private AdjacencyList graph; // the graph our crawler will create
 	private File f;
 	private Queue<String> test;	//needed for BFS change name from test
-	private boolean toggle;
+	private boolean counterToggle;
+	int counter;
 	
 	/*
 	 * @param seedURL String representing relative address of the Seed URL
@@ -40,6 +41,7 @@ public class WikiCrawler {
 		this.seedUrl = seedUrl;
 		this.max = max;
 		this.fileName = fileName;
+		this.counter = 0;
 		
 //		list = extractLinks(getPageSource(seedUrl));
 		addToGraph(getPageSource(seedUrl));
@@ -63,7 +65,7 @@ public class WikiCrawler {
 //			list.addAll(temp);
 //		}
 //	
-//		toggle = true;
+//		counterToggle = true;
 //	
 //		for(int i = 0; i < list.size(); i++) {
 //			temp = extractLinks(getPageSource(seedUrl));
@@ -86,12 +88,14 @@ public class WikiCrawler {
 			input = s.next();
 			
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if((!toggle) && (graph.getKeys().size() < max)) {
-					graph.addNode(input);
-					graph.addEdge(seedUrl, input);
+				if((counter < max) && !(counterToggle)) {
+					if(graph.addNode(input)) {
+						graph.addEdge(seedUrl, input);
+						counter++;
+					}
 				}
-				else {
-					System.out.println("Toggle: " + toggle + " Graph Size: " + graph.getMap().size());
+				else if(counterToggle) {	// If counter >= max
+					
 				}
 			}
 		}
