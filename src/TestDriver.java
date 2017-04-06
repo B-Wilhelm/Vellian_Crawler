@@ -1,6 +1,10 @@
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * @author Brett Wilhelm
+ * @author Zach Johnson
+ *
+ */
 public class TestDriver {
 	public static void main(String[] args) throws IOException {
 		final String Ames = "Ames";
@@ -18,7 +22,7 @@ public class TestDriver {
 		System.out.println("Expected: 3, Actual: " + biggestComponent);
 		
 		int numC = gp.numComponents();
-		System.out.println("Expected: 3, Actual: " + numC);
+		System.out.println(" testing numComponents, Expected: 3, Actual: " + numC);
 		
 		ArrayList<String> BFSpath = gp.bfsPath(Chicago, Denver);
 		
@@ -30,6 +34,7 @@ public class TestDriver {
 		for(int i = 0; i < BFSpath.size(); i++) {
 			System.out.println(BFSpath.get(i));//should print nothing
 		}
+		
 	}
 
 

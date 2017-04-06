@@ -22,6 +22,7 @@ public class GraphProcessor {
 	private ArrayList<String> path = new ArrayList<String>();
 	private Iterator<String> it;//used to iterate over neighbors
 	private String SCC = "";//String holding Strongly connected components, used so that the different SCC methods have a consistant understand of SCC
+	private int numSCC = 0;
 	public String BFS = "";//Used to hold the DFS from its helper method
 	
 	/**
@@ -38,6 +39,8 @@ public class GraphProcessor {
 		}
 		undiscovered = new HashMap<String, Boolean>();
 		undiscovered.putAll(isTraveled);
+		
+		computeSCCs();
 	}
 	/**
 	 * @param v String holding the vertex 
@@ -53,7 +56,7 @@ public class GraphProcessor {
 	 * @return true if first component and second component are within the same Strongly Connected Component
 	 */
 	public boolean sameComponent(String u, String v) {
-		computeSCCs();
+		//computeSCCs(); done within the constructor
 		ArrayList<String> SCCList;
 		Scanner s1 = new Scanner(SCC);
 		String line;
@@ -82,7 +85,7 @@ public class GraphProcessor {
 	 * @return an ArrayList containing all vertices that share a Strongly Connected Component with v
 	 */
 	public ArrayList<String> componentVerticies(String v) {
-		computeSCCs();
+		//computeSCCs(); done within the constructor
 		ArrayList<String> SCCList = new ArrayList<String>();
 		Scanner s1 = new Scanner(SCC);
 		String line;
@@ -110,7 +113,7 @@ public class GraphProcessor {
 	 * @return the number of vertices within in the largest Strongly Connected Component
 	 */
 	public int largestComponent() {
-		computeSCCs();
+		//computeSCCs();
 		ArrayList<String> SCCList;
 		Scanner s1 = new Scanner(SCC);
 		String line;
@@ -137,16 +140,7 @@ public class GraphProcessor {
 	 * @return the number of Strongly Connected Components within the graph created by the constructor
 	 */
 	public int numComponents() {
-		computeSCCs();
-		Scanner s1 = new Scanner(SCC);
-		int count = 0;
-		
-		while(s1.hasNextLine()){
-			count++;
-			s1.nextLine();
-		}
-		s1.close();
-		return count;
+		return numSCC;
 	}
 	/**
 	 * 
@@ -305,6 +299,7 @@ public class GraphProcessor {
 			if(isTraveled.get(v) == false) {
 				DFSHelper(reverse, v, isTraveled);//determines and potentially adds a vertex to it SCC
 				SCC += "\n";//starts a new SCC
+				numSCC++;//increment the counter of sccs
 			}
 		}
 	}//end of computeSCCs
