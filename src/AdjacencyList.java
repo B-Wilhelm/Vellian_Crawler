@@ -14,7 +14,7 @@ import java.util.Set;
  */
 
 public class AdjacencyList {
-	public Map< String, LinkedList<String>> adj;
+	private Map<String, LinkedList<String>> adj;
 	private final int V;
 	
 	private AdjacencyList() throws FileNotFoundException {
@@ -57,6 +57,7 @@ public class AdjacencyList {
 	public int getOutDegree(String node) { return adj.get(node).size(); }
 	public int getMaxVertices() { return V; }
 	public Set<String> getKeys() { return adj.keySet(); }
+	public Map<String, LinkedList<String>> getMap() { return adj; }
 	
 	
 }
