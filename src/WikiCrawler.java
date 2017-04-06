@@ -41,8 +41,8 @@ public class WikiCrawler {
 		this.max = max;
 		this.fileName = fileName;
 		
-		list = extractLinks(getPageSource(seedUrl));
-		crawl();
+//		list = extractLinks(getPageSource(seedUrl));
+		addToGraph(getPageSource(seedUrl));
 	}
 	
 	/*
@@ -75,24 +75,23 @@ public class WikiCrawler {
 	
 	private void addToGraph(String doc) {
 		graph = new AdjacencyList(max);
-		ArrayList<String> newList = new ArrayList<String>();
 		input = "";
 		s = new Scanner(doc);	// Scanner for whole html source code
 		s.useDelimiter("<p>|<P>");
 		if(s.hasNext()) { s.next(); }	// Skips to just after first instance of <p> or <P>
 		s.useDelimiter("href=\"|\"");
+		graph.addNode(seedUrl);
 		
 		while(s.hasNext()) {
 			input = s.next();
 			
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if(!toggle && graph.getMap().size()<max) {
-					graph.addNode(seedUrl);
+				if((!toggle) && (graph.getKeys().size() < max)) {
+					graph.addNode(input);
 					graph.addEdge(seedUrl, input);
-					System.out.println(input);
 				}
 				else {
-					
+					System.out.println("Toggle: " + toggle + " Graph Size: " + graph.getMap().size());
 				}
 			}
 		}
@@ -131,7 +130,7 @@ public class WikiCrawler {
 	            // all good
 	        }
 	    }
-		return "";
+		return null;
 	}
 	
 	public String getSource() {	// May make private

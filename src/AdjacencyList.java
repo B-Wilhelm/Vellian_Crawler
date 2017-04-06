@@ -45,8 +45,9 @@ public class AdjacencyList {
 		s.close();
 	}
 	
-	public void addNode(String node) {
-		 adj.putIfAbsent(node, new LinkedList<String>());
+	public boolean addNode(String node) {
+		 if(adj.putIfAbsent(node, new LinkedList<String>()) == null) { return true; }
+		 else { return false; }
 	}
 	
 	public void addEdge(String from, String to) {
