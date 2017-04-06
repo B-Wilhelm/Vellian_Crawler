@@ -20,9 +20,15 @@ public class TestDriver {
 		int numC = gp.numComponents();
 		System.out.println("Expected: 3, Actual: " + numC);
 		
-		ArrayList<String> BFSpath = gp.bfsPath(Chicago, Ames);
+		ArrayList<String> BFSpath = gp.bfsPath(Chicago, Denver);
+		
 		for(int i = 0; i < BFSpath.size(); i++) {
 			System.out.println(BFSpath.get(i));
+		}
+		
+		BFSpath = gp.bfsPath(Denver, Ames);
+		for(int i = 0; i < BFSpath.size(); i++) {
+			System.out.println(BFSpath.get(i));//should print nothing
 		}
 	}
 
