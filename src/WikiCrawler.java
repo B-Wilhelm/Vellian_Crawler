@@ -86,8 +86,8 @@ public class WikiCrawler {
 			input = s.next();
 			
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if(!toggle && graph.size()<max) {
-					
+				if(!toggle && graph.getMap().size()<max) {
+					System.out.println(input);
 				}
 				else {
 					

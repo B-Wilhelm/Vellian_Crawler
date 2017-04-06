@@ -8,9 +8,9 @@ public class testDrive {
 		
 		ArrayList<String> temp = wc.getList();
 		
-		for(int i = 0; i < temp.size(); i++) {
-			System.out.println();
-		}
+//		for(int i = 0; i < temp.size(); i++) {
+//			System.out.println();
+//		}
 		
 		
 	}
