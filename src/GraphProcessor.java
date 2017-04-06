@@ -22,7 +22,8 @@ public class GraphProcessor {
 	private ArrayList<String> path = new ArrayList<String>();
 	private Stack<String> s = new Stack<String>();
 	private Iterator<String> it;
-	public String SCC = "";
+	private String SCC = "";
+	public String DFS = "";
 	
 	public GraphProcessor(String graphData) throws FileNotFoundException {
 		graph = new AdjacencyList(graphData);
@@ -127,16 +128,8 @@ public class GraphProcessor {
 	}
 	
 	public ArrayList<String> bfsPath(String u, String v) {
-		path = new ArrayList<String>();
-		s = new Stack<String>();
-		isTraveled.clear();
-		isTraveled.putAll(undiscovered);
-		
-		BFSPathFinder(u,v);
-		
-		while(!s.isEmpty()){
-			path.add(s.pop());
-		}
+		path = new ArrayList<String>();	
+		DFS(u);
 		return path;
 	}
 	
@@ -146,28 +139,28 @@ public class GraphProcessor {
 		isTraveled.replace(v, true);
 	}
 	//shortest path helper methods
-	private void BFSPathFinder(String u, String v) {
+	private void DFSUtil(String u, Map<String, Boolean> visited) {
 		setIsTraveled(u);
-		s.push(u);
-		if(u == v) {
-			return;
-		}
+		DFS += u +" ";
+		
+		String cur;
 		neighbors = graph.getNeighbors(u);
 		it = neighbors.iterator();
 		while(it.hasNext()) {
-			String cur = it.next();
-			if (!isTraveled.get(cur)) {
-				setIsTraveled(cur);
-				s.push(cur);
-				BFSPathFinder(cur, v);
-				s.pop();
+			cur = it.next();
+			if(visited.get(cur) == false) {
+				DFSUtil(cur, visited);
 			}
 		}
-		s.pop();
-		if(s.isEmpty()){
-			return;
-		}	
 	}
+	
+	private void DFS(String u) {
+		isTraveled.clear();
+		isTraveled.putAll(undiscovered);
+		
+		DFSUtil(u, isTraveled);
+	}
+	
 	//Strongly Connected Component helper methods
 	private void DFSHelper(AdjacencyList g, String v,  Map<String, Boolean> visited) {
 		setIsTraveled(v);
@@ -224,10 +217,7 @@ public class GraphProcessor {
 		isTraveled.clear();
 		isTraveled.putAll(undiscovered);
 		Stack<String> s1 = new Stack<String>();
-		
-		isTraveled.clear();
-		isTraveled.putAll(undiscovered);
-		
+			
 		for(String key : graph.getKeys()){
 			if(isTraveled.get(key) == false) {
 				fillOrder(key, isTraveled, s1);
