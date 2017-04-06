@@ -23,7 +23,7 @@ public class GraphProcessor {
 	private Stack<String> s = new Stack<String>();
 	private Iterator<String> it;
 	private String SCC = "";
-	private String DFS = "";
+	public String DFS = "";
 	
 	public GraphProcessor(String graphData) throws FileNotFoundException {
 		graph = new AdjacencyList(graphData);
@@ -128,9 +128,11 @@ public class GraphProcessor {
 	}
 	
 	public ArrayList<String> bfsPath(String u, String v) {
+		DFS  = "";
 		path = new ArrayList<String>();	
 		DFS(u);
 		Scanner s = new Scanner(DFS);
+		
 		while(s.hasNext()) {
 			String cur = s.next();
 			path.add(cur);
