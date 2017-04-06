@@ -7,7 +7,6 @@ public class TestDriver {
 		final String Minneapolis = "Minneapolis";
 		final String Chicago = "Chicago";
         final String Denver = "Denver";
-        final String Omaha = "Omaha";
 		GraphProcessor gp = new GraphProcessor("C:/Users/Zach Johnson/git/CityMap.txt");
 		
 		//Vertices are Ames, Minneapolis, Chicago, Denver, Omaha
