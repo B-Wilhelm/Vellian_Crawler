@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -112,7 +113,7 @@ public class WikiCrawler {
 		}
 	}
 	
-	private ArrayList<String> addToGraph(String doc) {
+	public ArrayList<String> addToGraph(String doc) {
 		ArrayList<String> tempList = new ArrayList<String>();
 		String input = "";
 		s = new Scanner(doc);	// Scanner for whole html source code
@@ -132,7 +133,7 @@ public class WikiCrawler {
 		return (tempList);
 	}
 	
-	private String getPageSource(String urlS) {	// Takes in relative URL
+	public String getPageSource(String urlS) {	// Takes in relative URL
 		progSource = "";
 		URL url;
 	    InputStream input = null;
@@ -140,8 +141,14 @@ public class WikiCrawler {
 	    String line;
 
 	    try {
-	        url = new URL(BASE_URL + urlS);
+	    	if(requestCount > 99) {
+	    		requestCount = 0;
+	    		TimeUnit.SECONDS.sleep(3);	// Waits for 3 seconds after every 100 requests
+	    	}
+	    	
+	        url = new URL(BASE_URL + urlS);	        
 	        input = url.openStream();  // throws an IOException
+	        requestCount++;
 	        br = new BufferedReader(new InputStreamReader(input));
 	        if ((line = br.readLine()) != null) {
 	        	progSource += line;
@@ -155,7 +162,9 @@ public class WikiCrawler {
 	         m.printStackTrace();
 	    } catch (IOException i) {
 	         i.printStackTrace();
-	    } finally {
+	    } catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
 	        try {
 	            if (input != null) {
 	            	input.close();

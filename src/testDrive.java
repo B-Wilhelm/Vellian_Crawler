@@ -5,10 +5,14 @@ public class testDrive {
 	public static void main(String[] args) throws IOException {
 		WikiCrawler wc = new WikiCrawler("/wiki/Complexity_theory", 2, "test.txt");
 		
-		wc.crawl();
+		for(String s: wc.addToGraph(wc.getPageSource("/wiki/Complexity_theory"))) {
+			System.out.println(s);
+		};
 		
-		System.out.println(wc.graph.getNeighbors("/wiki/Complexity_theory"));
-		System.out.println(wc.graph.getNeighbors("/wiki/Chaos_theory"));
+//		wc.crawl();
+		
+//		System.out.println(wc.graph.getNeighbors("/wiki/Complexity_theory"));
+//		System.out.println(wc.graph.getNeighbors("/wiki/Chaos_theory"));
 		
 //		AdjacencyList temp = wc.getList();
 		
