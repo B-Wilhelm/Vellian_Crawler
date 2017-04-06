@@ -87,6 +87,8 @@ public class WikiCrawler {
 			
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
 				if(!toggle && graph.getMap().size()<max) {
+					graph.addNode(seedUrl);
+					graph.addEdge(seedUrl, input);
 					System.out.println(input);
 				}
 				else {
@@ -136,8 +138,8 @@ public class WikiCrawler {
 		return source;
 	}
 	
-	public ArrayList<String> getList() {
-		return list;
+	public AdjacencyList getList() {
+		return graph;
 	}
 	
 	private void writeToFile() {
