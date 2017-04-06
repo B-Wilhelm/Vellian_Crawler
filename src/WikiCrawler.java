@@ -57,18 +57,18 @@ public class WikiCrawler {
 	public void crawl() {
 		graph = new AdjacencyList(max);
 		
-		for(int i = 0; i<list.size() && list.size()<max; i++) {
-			seedUrl = list.get(i).getEnd();
-			temp = extractLinks(getPageSource(seedUrl));
-			list.addAll(temp);
-		}
-	
-		toggle = true;
-	
-		for(int i = 0; i < list.size(); i++) {
-			temp = extractLinks(getPageSource(seedUrl));
-			System.out.println(list.addAll(temp));
-		}
+//		for(int i = 0; i<list.size() && list.size()<max; i++) {
+//			seedUrl = list.get(i).getEnd();
+//			temp = extractLinks(getPageSource(seedUrl));
+//			list.addAll(temp);
+//		}
+//	
+//		toggle = true;
+//	
+//		for(int i = 0; i < list.size(); i++) {
+//			temp = extractLinks(getPageSource(seedUrl));
+//			System.out.println(list.addAll(temp));
+//		}
 	}
 	
 	/////////////////////////////////////////
