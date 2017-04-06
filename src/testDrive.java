@@ -3,16 +3,16 @@ import java.io.IOException;
 public class testDrive {
 
 	public static void main(String[] args) throws IOException {
-		WikiCrawler wc = new WikiCrawler("/wiki/Complexity_theory", 2, "test.txt");
+		WikiCrawler wc = new WikiCrawler("/wiki/Complexity_theory", 20, "test.txt");
 		
-		for(String s: wc.addToGraph(wc.getPageSource("/wiki/Complexity_theory"))) {
-			System.out.println(s);
-		};
+//		for(String s: wc.addToGraph(wc.getPageSource("/wiki/Complexity_theory"))) {
+//			System.out.println(s);
+//		};
 		
-//		wc.crawl();
+		wc.crawl();
 		
-//		System.out.println(wc.graph.getNeighbors("/wiki/Complexity_theory"));
-//		System.out.println(wc.graph.getNeighbors("/wiki/Chaos_theory"));
+		System.out.println(wc.graph.getNeighbors("/wiki/Complexity_theory"));
+		System.out.println(wc.graph.getNeighbors("/wiki/Chaos_theory"));
 		
 //		AdjacencyList temp = wc.getList();
 		

@@ -41,6 +41,7 @@ public class WikiCrawler {
 	private boolean counterToggle;
 	private int counter;
 	private Map<String, Boolean> isTraveled;
+	private ArrayList<String> dupeList;
 	private int requestCount = 0;
 	public AdjacencyList graph; // the graph our crawler will create
 	
@@ -55,6 +56,7 @@ public class WikiCrawler {
 		this.fileName = fileName;
 		counter = 0;
 		
+		dupeList = new ArrayList<String>();
 		graph = new AdjacencyList(max);
 	}
 	
@@ -113,7 +115,7 @@ public class WikiCrawler {
 		}
 	}
 	
-	public ArrayList<String> addToGraph(String doc) {
+	private ArrayList<String> addToGraph(String doc) {
 		ArrayList<String> tempList = new ArrayList<String>();
 		String input = "";
 		s = new Scanner(doc);	// Scanner for whole html source code
@@ -124,8 +126,12 @@ public class WikiCrawler {
 		while(s.hasNext()) {
 			input = s.next();
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if((counter < max) && !(counterToggle)) {
-					tempList.add(input);
+				if(!(dupeList.contains(input))) {
+					if((counter < max) && !(counterToggle)) {
+						tempList.add(input);
+						dupeList.add(input);
+						counter++;
+					}
 				}
 			}
 		}
@@ -133,7 +139,7 @@ public class WikiCrawler {
 		return (tempList);
 	}
 	
-	public String getPageSource(String urlS) {	// Takes in relative URL
+	private String getPageSource(String urlS) {	// Takes in relative URL
 		progSource = "";
 		URL url;
 	    InputStream input = null;
