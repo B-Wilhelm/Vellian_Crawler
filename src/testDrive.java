@@ -1,9 +1,11 @@
 import java.io.IOException;
 
 public class testDrive {
-
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
-		WikiCrawler wc = new WikiCrawler("/wiki/Complexity_theory", 20, "test.txt");
+		final String COMPLEXITY = "/wiki/Complexity_theory";
+		final String CHAOS = "/wiki/Chaos_theory";
+		WikiCrawler wc = new WikiCrawler(COMPLEXITY, 20, "test.txt");
 		
 //		for(String s: wc.addToGraph(wc.getPageSource("/wiki/Complexity_theory"))) {
 //			System.out.println(s);
@@ -11,23 +13,23 @@ public class testDrive {
 		
 		wc.crawl();
 		
-		System.out.println(wc.graph.getNeighbors("/wiki/Complexity_theory"));
-		System.out.println(wc.graph.getNeighbors("/wiki/Chaos_theory"));
+		System.out.println(wc.graph.getNeighbors(COMPLEXITY));
+		System.out.println("Size: " + wc.graph.getNeighbors(COMPLEXITY).size());
 		
-//		AdjacencyList temp = wc.getList();
+//		AdjacencyList wc.graph = wc.getList();
 		
-//		for(int i = 0; i < temp.getMap().size(); i++) {
+//		for(int i = 0; i < wc.graph.getMap().size(); i++) {
 //			System.out.println();
 //		}
 		
-//		System.out.println(temp.getNeighbors("/wiki/Complexity_theory"));
+//		System.out.println(wc.graph.getNeighbors("/wiki/Complexity_theory"));
 		
-//		for(int j = 0; j < temp.getNeighbors("/wiki/Complexity_theory").size(); j++) {
-//			if(j < temp.getNeighbors("/wiki/Complexity_theory").size()-1) {
-//				System.out.println(temp.getNeighbors("/wiki/Complexity_theory").get(j));
+//		for(int j = 0; j < wc.graph.getNeighbors(CHAOS).size(); j++) {
+//			if(j < wc.graph.getNeighbors(CHAOS).size()-1) {
+//				System.out.println(wc.graph.getNeighbors(CHAOS).get(j));
 //			}
 //			else {
-//				System.out.print(temp.getNeighbors("/wiki/Complexity_theory").get(j));
+//				System.out.print(wc.graph.getNeighbors(CHAOS).get(j));
 //			}
 //		}
 	}

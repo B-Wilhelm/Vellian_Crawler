@@ -1,10 +1,8 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -36,13 +34,12 @@ public class WikiCrawler {
 	private String source, progSource;
 	private static final String CONTAINS_CHECK = "/wiki/";
 	private static final String[] NOT_CONTAINED = {":", "#"};
-	private URI f;
 	private Queue<String> queue;	//needed for BFS change name from test
-	private boolean counterToggle;
 	private int counter;
 	private Map<String, Boolean> isTraveled;
 	private ArrayList<String> dupeList;
 	private int requestCount = 0;
+	private boolean toggleCounter;
 	public AdjacencyList graph; // the graph our crawler will create
 	
 	/*
@@ -54,7 +51,6 @@ public class WikiCrawler {
 		this.seedUrl = seedUrl;
 		this.max = max;
 		this.fileName = fileName;
-		counter = 0;
 		
 		dupeList = new ArrayList<String>();
 		graph = new AdjacencyList(max);
@@ -70,6 +66,9 @@ public class WikiCrawler {
 	}
 	
 	public void crawl() {
+		toggleCounter = false;
+		counter = 0;
+		
 		bfs(seedUrl);
 	}
 	
@@ -93,7 +92,7 @@ public class WikiCrawler {
 		while(queue.size() != 0) {
 			String s = queue.remove();
 			graph.addNode(s);
-			strList = addToGraph(getPageSource(s));
+			strList = addToGraph(getPageSource(s), s);
 			
 			for(int i = 0; i < strList.size(); i++) {
 				graph.addNode(strList.get(i));
@@ -115,8 +114,9 @@ public class WikiCrawler {
 		}
 	}
 	
-	private ArrayList<String> addToGraph(String doc) {
+	private ArrayList<String> addToGraph(String doc, String url) {
 		ArrayList<String> tempList = new ArrayList<String>();
+		ArrayList<String> tempDupeList = new ArrayList<String>();
 		String input = "";
 		s = new Scanner(doc);	// Scanner for whole html source code
 		s.useDelimiter("<p>|<P>");
@@ -125,15 +125,24 @@ public class WikiCrawler {
 		
 		while(s.hasNext()) {
 			input = s.next();
+			dupeList.add(url);
+			
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
 				if(!(dupeList.contains(input))) {
-					if((counter < max) && !(counterToggle)) {
+					if((counter < max && !(toggleCounter))) {
 						tempList.add(input);
 						dupeList.add(input);
 						counter++;
 					}
 				}
+				else if(dupeList.contains(input) && !(tempDupeList.contains(input)) && counter>=max && toggleCounter && !(input.equals(url))) {
+					tempList.add(input);
+					tempDupeList.add(input);
+				}
 			}
+		}
+		if(counter >= max) {
+			toggleCounter = true;
 		}
 		s.close();
 		return (tempList);
@@ -190,13 +199,23 @@ public class WikiCrawler {
 		return graph;
 	}
 	
-	private void writeToFile() {
-		List<String> lines = Arrays.asList("test");
-		Path file = Paths.get(f);
+	private void writeToFile(String data) {
+		List<String> lines = Arrays.asList(data);
+		Path file = Paths.get(fileName);
 		try {
 			Files.write(file, lines, Charset.forName("UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String toString() {
+		String data = "";
+		
+		for(int i = 0; i < dupeList.size(); i++) {
+			
+		}
+		
+		return data;
 	}
 }
