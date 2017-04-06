@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -29,7 +31,9 @@ public class WikiCrawler {
 	private AdjacencyList graph; // the graph our crawler will create
 	private File f;
 	private Queue<String> test;	//needed for BFS change name from test
-	private boolean toggle;
+	private boolean counterToggle;
+	int counter;
+	private Map<String, Boolean> isTraveled;
 	
 	/*
 	 * @param seedURL String representing relative address of the Seed URL
@@ -40,40 +44,31 @@ public class WikiCrawler {
 		this.seedUrl = seedUrl;
 		this.max = max;
 		this.fileName = fileName;
+		this.counter = 0;
 		
-//		list = extractLinks(getPageSource(seedUrl));
-		addToGraph(getPageSource(seedUrl));
+		extractLinks(getPageSource(seedUrl));
 	}
 	
 	/*
 	 * @param doc String that represents the source code of an html page
 	 */
-	public ArrayList<String> extractLinks(String doc) {
-		addToGraph(doc);
-		
-		return null;
+	public ArrayList<String> extractLinks(String doc) {		
+		return new ArrayList<String>(addToGraph(doc));
 	}
 	
 	public void crawl() {
 		graph = new AdjacencyList(max);
 		
-//		for(int i = 0; i<list.size() && list.size()<max; i++) {
-//			seedUrl = list.get(i).getEnd();
-//			temp = extractLinks(getPageSource(seedUrl));
-//			list.addAll(temp);
-//		}
-//	
-//		toggle = true;
-//	
-//		for(int i = 0; i < list.size(); i++) {
-//			temp = extractLinks(getPageSource(seedUrl));
-//			System.out.println(list.addAll(temp));
-//		}
+		
 	}
 	
 	/////////////////////////////////////////
 	
-	private void addToGraph(String doc) {
+	private void setIsTraveled(String v) {
+		isTraveled.replace(v, true);
+	}
+	
+	private LinkedList<String> addToGraph(String doc) {
 		graph = new AdjacencyList(max);
 		input = "";
 		s = new Scanner(doc);	// Scanner for whole html source code
@@ -86,16 +81,17 @@ public class WikiCrawler {
 			input = s.next();
 			
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
-				if((!toggle) && (graph.getKeys().size() < max)) {
-					graph.addNode(input);
-					graph.addEdge(seedUrl, input);
-				}
-				else {
-					System.out.println("Toggle: " + toggle + " Graph Size: " + graph.getMap().size());
+				if((counter < max) && !(counterToggle)) {
+					if(graph.addNode(input)) {
+						graph.addEdge(seedUrl, input);
+						counter++;
+					}
 				}
 			}
 		}
 		s.close();
+		
+		return graph.getNeighbors(seedUrl);
 	}
 	
 	private String getPageSource(String urlS) {	// Takes in relative URL

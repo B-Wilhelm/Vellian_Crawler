@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class testDrive {
 
@@ -12,10 +11,10 @@ public class testDrive {
 //			System.out.println();
 //		}
 		
-		System.out.println(temp.getNeighbors("/wiki/Complexity_theory"));
+//		System.out.println(temp.getNeighbors("/wiki/Complexity_theory"));
 		
-//		for(int j = 0; j < temp.getNeighbors("/wiki/Complexity_theory").size(); j++) {
-//			System.out.println(temp.getNeighbors("/wiki/Complexity_theory").get(j));
-//		}
+		for(int j = 0; j < temp.getNeighbors("/wiki/Complexity_theory").size(); j++) {
+			System.out.println(temp.getNeighbors("/wiki/Complexity_theory").get(j));
+		}
 	}
 }

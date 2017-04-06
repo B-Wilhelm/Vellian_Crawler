@@ -17,9 +17,11 @@ public class AdjacencyList {
 	private Map<String, LinkedList<String>> adj;
 	private final int V;
 	
+	@SuppressWarnings("unused")
 	private AdjacencyList() throws FileNotFoundException {
 		V = 0;
 	}
+	
 	public AdjacencyList(int v) {
 		adj = new HashMap<String, LinkedList<String>>();
 		V = v;
