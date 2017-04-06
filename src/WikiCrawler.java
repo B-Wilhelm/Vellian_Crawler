@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -21,16 +22,15 @@ import java.util.Scanner;
 
 public class WikiCrawler {
 	static final String BASE_URL = "https://en.wikipedia.org";
-	private ArrayList<String> list = new ArrayList<String>();
 	private String seedUrl, fileName;
 	private int max;
-	private Scanner s, l;	// Scanner for entire source code, Scanner for individual links
-	private String source, input, progSource;
+	private Scanner s;	// Scanner for source code
+	private String source, progSource;
 	private static final String CONTAINS_CHECK = "/wiki/";
 	private static final String[] NOT_CONTAINED = {":", "#"};
 	private AdjacencyList graph; // the graph our crawler will create
 	private File f;
-	private Queue<String> test;	//needed for BFS change name from test
+	private Queue<String> queue;	//needed for BFS change name from test
 	private boolean counterToggle;
 	int counter;
 	private Map<String, Boolean> isTraveled;
@@ -44,25 +44,29 @@ public class WikiCrawler {
 		this.seedUrl = seedUrl;
 		this.max = max;
 		this.fileName = fileName;
-		this.counter = 0;
+		counter = 0;
+		isTraveled = new HashMap<String, Boolean>();
 		
 		extractLinks(getPageSource(seedUrl));
 	}
 	
 	/*
 	 * @param doc String that represents the source code of an html page
+	 * @return temp ArrayList filled with URLs (Strings) that were pulled from a wiki page
 	 */
-	public ArrayList<String> extractLinks(String doc) {		
-		return new ArrayList<String>(addToGraph(doc));
+	public ArrayList<String> extractLinks(String doc) {
+		ArrayList<String> temp = new ArrayList<String>(addToGraph(doc));
+		return temp;
 	}
 	
 	public void crawl() {
 		graph = new AdjacencyList(max);
+		queue = new LinkedList<String>();
 		
 		
 	}
 	
-	/////////////////////////////////////////
+	/////////////////////////////s////////////
 	
 	private void setIsTraveled(String v) {
 		isTraveled.replace(v, true);
@@ -70,7 +74,7 @@ public class WikiCrawler {
 	
 	private LinkedList<String> addToGraph(String doc) {
 		graph = new AdjacencyList(max);
-		input = "";
+		String input = "";
 		s = new Scanner(doc);	// Scanner for whole html source code
 		s.useDelimiter("<p>|<P>");
 		if(s.hasNext()) { s.next(); }	// Skips to just after first instance of <p> or <P>
@@ -79,19 +83,18 @@ public class WikiCrawler {
 		
 		while(s.hasNext()) {
 			input = s.next();
-			
 			if((input.toLowerCase()).contains(CONTAINS_CHECK) && !((input.toLowerCase()).contains(NOT_CONTAINED[0])) && !((input.toLowerCase()).contains(NOT_CONTAINED[1])) && (input.charAt(1)=='w')) {	// Ensures properly formatted links get through
 				if((counter < max) && !(counterToggle)) {
 					if(graph.addNode(input)) {
 						graph.addEdge(seedUrl, input);
+						
 						counter++;
 					}
 				}
 			}
 		}
 		s.close();
-		
-		return graph.getNeighbors(seedUrl);
+		return (graph.getNeighbors(seedUrl));
 	}
 	
 	private String getPageSource(String urlS) {	// Takes in relative URL
