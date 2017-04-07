@@ -2,28 +2,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
  * @author Brett Wilhelm
  * @author Zach Johnson
- * 
  */
 
 public class WikiCrawler {
@@ -31,7 +24,6 @@ public class WikiCrawler {
 	private String seedUrl, fileName;
 	private int max;
 	private Scanner s;	// Scanner for source code
-	private String source, progSource;
 	private static final String CONTAINS_CHECK = "/wiki/";
 	private static final String[] NOT_CONTAINED = {":", "#"};
 	private Queue<String> queue;	//needed for BFS change name from test
@@ -42,12 +34,13 @@ public class WikiCrawler {
 	private boolean toggleCounter;
 	public AdjacencyList graph; // the graph our crawler will create
 	
-	/*
+	/**
+	 * Constructor
 	 * @param seedURL String representing relative address of the Seed URL
 	 * @param max Integer primitive representing the max number of pages to crawl
 	 * @param fileName String representing the name of the file that the graph will be written to
 	 */
-	public WikiCrawler(String seedUrl, int max, String fileName) throws IOException {
+	public WikiCrawler(String seedUrl, int max, String fileName) {
 		this.seedUrl = seedUrl;
 		this.max = max;
 		this.fileName = fileName;
@@ -56,7 +49,8 @@ public class WikiCrawler {
 		graph = new AdjacencyList(max);
 	}
 	
-	/*
+	/**
+	 * Extracts links from graph that was pulled from a wiki page in addToGraph()
 	 * @param doc String that represents the source code of an html page
 	 * @return temp ArrayList filled with URLs (Strings) that were pulled from a wiki page
 	 */
@@ -65,19 +59,29 @@ public class WikiCrawler {
 		return temp;
 	}
 	
+	/**
+	 * Initiates the bfs that fills the graph with data from all wiki pages
+	 */
 	public void crawl() {
 		toggleCounter = false;
 		counter = 0;
-		
 		bfs(seedUrl);
 	}
 	
 	/////////////////////////////s////////////
 	
+	/**
+	 * Sets the value of a key in the isTraveled map to true
+	 * @param v String that represents the key in the isTraveled Map
+	 */
 	private void setIsTraveled(String v) {
 		isTraveled.replace(v, true);
 	}
 	
+	/**
+	 * Uses bfsearch to add links from wiki pages to a graph
+	 * @param url String that represents the URL of the first link that you send in to the constructor
+	 */
 	private void bfs(String url) {
 		ArrayList<String> strList;
 		LinkedList<String> neighbours;
@@ -114,6 +118,12 @@ public class WikiCrawler {
 		}
 	}
 	
+	/**
+	 * Finds links in webpage source code, checks them for validity and returns them
+	 * @param doc Represents the source code of a webpage
+	 * @param url Represents the url given to the constructor
+	 * @return The list of valid links found on a page
+	 */
 	private ArrayList<String> addToGraph(String doc, String url) {
 		ArrayList<String> tempList = new ArrayList<String>();
 		ArrayList<String> tempDupeList = new ArrayList<String>();
@@ -148,8 +158,13 @@ public class WikiCrawler {
 		return (tempList);
 	}
 	
-	private String getPageSource(String urlS) {	// Takes in relative URL
-		progSource = "";
+	/**
+	 * Returns the source code of a webpage
+	 * @param urlS Relative URL of the wiki page that needs to have its source code grabbed
+	 * @return String that contains the page's full source code
+	 */
+	private String getPageSource(String urlS) {
+		String progSource = "";
 		URL url;
 	    InputStream input = null;
 	    BufferedReader br = null;
@@ -191,24 +206,25 @@ public class WikiCrawler {
 		return null;
 	}
 	
-	public String getSource() {	// May make private
-		return source;
-	}
-	
-	public AdjacencyList getList() {
-		return graph;
-	}
-	
+	/**
+	 * Writes the graph to a file
+	 * @param data String representing the graph to be written to the file
+	 */
 	private void writeToFile(String data) {
-		List<String> lines = Arrays.asList(data);
-		Path file = Paths.get(fileName);
-		try {
-			Files.write(file, lines, Charset.forName("UTF-8"));
+		try{
+		    PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+		    writer.println(data);
+		    writer.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+		   // do something
 		}
 	}
 	
+	/**
+	 * Returns String of the graph
+	 * @return String representation of the graph that will eventually be written to a file
+	 */
+	@Override
 	public String toString() {
 		String data = "";
 		
