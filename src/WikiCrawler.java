@@ -66,6 +66,7 @@ public class WikiCrawler {
 		toggleCounter = false;
 		counter = 0;
 		bfs(seedUrl);
+		writeToFile(getPrintData());
 	}
 	
 	/////////////////////////////s////////////
@@ -226,8 +227,7 @@ public class WikiCrawler {
 	 * Returns String of the graph
 	 * @return String representation of the graph that will eventually be written to a file
 	 */
-	@Override
-	public String toString() {
+	private String getPrintData() {
 		String data = max + "\n";
 		
 		for(int i = 0; i < printList.size(); i++) {
