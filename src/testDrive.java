@@ -13,8 +13,10 @@ public class testDrive {
 		
 		wc.crawl();
 		
-		System.out.println(wc.graph.getNeighbors(COMPLEXITY));
-		System.out.println("Size: " + wc.graph.getNeighbors(COMPLEXITY).size());
+//		System.out.println(wc.graph.getNeighbors(COMPLEXITY));
+//		System.out.println("Size: " + wc.graph.getNeighbors(COMPLEXITY).size());
+		
+		wc.writeToFile(wc.toString());
 		
 //		AdjacencyList wc.graph = wc.getList();
 		

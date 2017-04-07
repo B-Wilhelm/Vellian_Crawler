@@ -29,7 +29,7 @@ public class WikiCrawler {
 	private Queue<String> queue;	//needed for BFS change name from test
 	private int counter;
 	private Map<String, Boolean> isTraveled;
-	private ArrayList<String> dupeList;
+	private ArrayList<String> dupeList, printList;
 	private int requestCount = 0;
 	private boolean toggleCounter;
 	public AdjacencyList graph; // the graph our crawler will create
@@ -88,6 +88,7 @@ public class WikiCrawler {
 		queue = new LinkedList<String>();
 		isTraveled = new HashMap<String, Boolean>();
 		Iterator<String> iter;
+		printList = new ArrayList<String>();
 		
 		graph.addNode(url);
 		setIsTraveled(url);
@@ -102,6 +103,7 @@ public class WikiCrawler {
 				graph.addNode(strList.get(i));
 				graph.addEdge(s, strList.get(i));
 				isTraveled.putIfAbsent(strList.get(i), false);
+				printList.add(s + " " + strList.get(i));
 			}
 			
 			neighbours = graph.getNeighbors(s);
@@ -210,10 +212,10 @@ public class WikiCrawler {
 	 * Writes the graph to a file
 	 * @param data String representing the graph to be written to the file
 	 */
-	private void writeToFile(String data) {
+	public void writeToFile(String data) {
 		try{
 		    PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-		    writer.println(data);
+		    writer.print(data);
 		    writer.close();
 		} catch (IOException e) {
 		   // do something
@@ -226,10 +228,13 @@ public class WikiCrawler {
 	 */
 	@Override
 	public String toString() {
-		String data = "";
+		String data = max + "\n";
 		
-		for(int i = 0; i < dupeList.size(); i++) {
-			
+		for(int i = 0; i < printList.size(); i++) {
+			data += printList.get(i);
+			if(i < printList.size()-1) {
+				data += "\n";
+			}
 		}
 		
 		return data;
