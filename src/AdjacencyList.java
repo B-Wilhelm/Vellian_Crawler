@@ -88,7 +88,12 @@ public class AdjacencyList {
 	 * @param node the vertex in the graph we want the outdegree of
 	 * @return an int representing the number of edges that start at the sent in vertex
 	 */
-	public int getOutDegree(String node) { return adj.get(node).size(); }
+	public int getOutDegree(String node) {
+		if(adj.get(node) == null) {
+			return 0;
+		}
+		return adj.get(node).size();
+	}
 	
 	/**
 	 * 

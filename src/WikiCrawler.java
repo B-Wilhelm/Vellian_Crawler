@@ -32,7 +32,7 @@ public class WikiCrawler {
 	private ArrayList<String> dupeList, printList;
 	private int requestCount = 0;
 	private boolean toggleCounter;
-	public AdjacencyList graph; // the graph our crawler will create
+	private AdjacencyList graph; // the graph our crawler will create
 	
 	/**
 	 * Constructor
@@ -69,7 +69,7 @@ public class WikiCrawler {
 		writeToFile(getPrintData());
 	}
 	
-	/////////////////////////////s////////////
+	//////////////////////////////////////////
 	
 	/**
 	 * Sets the value of a key in the isTraveled map to true
